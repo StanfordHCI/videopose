@@ -1,5 +1,6 @@
 import os
 import cv2
+import sys
 from tqdm import tqdm
 import numpy as np
 from argparse import ArgumentParser
@@ -17,13 +18,16 @@ from tools.utils import interface as VideoPoseInterface
 interface3D = VideoPoseInterface
 from tools.utils import draw_3Dimg, draw_2Dimg, videoInfo, resize_img
 
+
+sys.path.append('./joints_detectors')
 import posenet
+
 import torch
 
 
 def save_pose(pose):
     print("sssss", len(pose[0]))
-    with open('result_torch.pkl','wb') as f:
+    with open('temp.pkl','wb') as f:
         pickle.dump(pose,f)
 
 def get_2d_pose_1(frame):
@@ -87,7 +91,7 @@ def main(VideoName, model_layes):
     #annotator = AnnotatorInterface.build(max_persons=1)
     for i in range(cap_length): #tqdm(range(cap_length)):
         #if i < 90: continue
-        #if i > 300: break
+        if i > 300: break
         _, frame = cap.read()
         input_image, display_image, output_scale = posenet.process_input(frame, 1/3.0, output_stride)
         frame, W, H = resize_img(frame)
