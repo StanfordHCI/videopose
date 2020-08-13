@@ -153,9 +153,9 @@ def videoInfo(VideoName):
 def videopose_model_load():
     # load trained model
     from common.model import TemporalModel
-    chk_filename = main_path + '/checkpoint/cpn-pt-243.bin'
+    chk_filename = main_path + '/checkpoint/epoch_80.bin'
     checkpoint = torch.load(chk_filename, map_location=lambda storage, loc: storage)# 把loc映射到storage
-    model_pos = TemporalModel(17, 2, 17,filter_widths=[3,3,3,3,3] , causal=False, dropout=False, channels=1024, dense=False)
+    model_pos = TemporalModel(17, 2, 17,filter_widths=[3,3,3] , causal=False, dropout=False, channels=1024, dense=False)
     model_pos = model_pos.cuda()
     model_pos.load_state_dict(checkpoint['model_pos'])
     receptive_field = model_pos.receptive_field()
